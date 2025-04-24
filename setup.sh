@@ -7,10 +7,10 @@ echo "📦 Updating packages..."
 sudo apt update
 
 echo "🐚 Installing zsh..."
-sudo apt install zsh
+sudo apt install -y zsh
 
 echo "🔧 Setting zsh as default..."
-chsh --shell "$(which zsh)" "USER" 2>2/dev/null || echo "Failed to change shell, run: `chsh -s $(which zsh)`
+chsh -s "$(which zsh)"
 
 echo "🔗 Linking .zshrc..."
 ZSHRC_TARGET="$HOME/.zshrc"
@@ -23,7 +23,6 @@ echo "📄 Ensuring .env file exists..."
 
 echo "🚀 Installing Starship prompt..."
 curl -sS https://starship.rs/install.sh | sh -s -- --yes
-eval "$(starship init zsh)"
 
 echo "🔤 Installing VictorMono Nerd Font..."
 FONT_ZIP="$HOME/Downloads/VictorMono.zip"
