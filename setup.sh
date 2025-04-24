@@ -19,8 +19,7 @@ if [ ! -L "$ZSHRC_TARGET" ]; then
 fi
 
 echo "📄 Ensuring .env file exists..."
-if [ ! -f .env ]; then
-  touch .env
+[ -f "$REPO_DIR/.env" ] || touch "$REPO_DIR/.env"
 
 echo "🚀 Installing Starship prompt..."
 curl -sS https://starship.rs/install.sh | sh
