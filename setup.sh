@@ -37,4 +37,10 @@ PROFILE_ID=$(dconf list /org/gnome/terminal/legacy/profiles:/ | head -n 1 | tr -
 dconf write /org/gnome/terminal/legacy/profiles:/$PROFILE_ID/font "'VictorMono Nerd Font 10'"
 dconf write /org/gnome/terminal/legacy/profiles:/$PROFILE_ID/use-system-font false
 
+echo "🔧 Installing Warp terminal..."
+WARP_DEB_URL="https://www.warp.dev/downloads/linux/warp-terminal_latest_amd64.deb"
+WARP_DEB="$HOME/Downloads/warp-terminal_latest_amd64.deb"
+curl -Lo "$WARP_DEB" "$WARP_DEB_URL"
+sudo apt install -y "$WARP_DEB"
+
 echo "✅ Done!"
