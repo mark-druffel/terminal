@@ -1,26 +1,32 @@
 #!/usr/bin/env bash
 
 set -e
-
-sudo apt update
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Set zshell as default
-sudo apt install zsh
-chsh -s $(which zsh)
-echo $SHELL
-# Symlink zshell to this repo
-ln -s "$REPO_DIR/.zshrc" "$HOME/.zshrc"
+echo "📦 Updating packages..."
+sudo apt update
 
-# Create .env if there isn't one
+echo "🐚 Installing zsh..."
+sudo apt install zsh
+
+echo "🔧 Setting zsh as default..."
+chsh -s $(which zsh)
+
+echo "🔗 Linking .zshrc..."
+ZSHRC_TARGET="$HOME/.zshrc"
+if [ ! -L "$ZSHRC_TARGET" ]; then
+  ln -sf "$REPO_DIR/.zshrc" "$ZSHRC_TARGET"
+fi
+
+echo "📄 Ensuring .env file exists..."
 if [ ! -f .env ]; then
   touch .env
 
-# Install starship
+echo "🚀 Installing Starship prompt..."
 curl -sS https://starship.rs/install.sh | sh
 eval "$(starship init zsh)"
 
-# Install font
+echo "🔤 Installing VictorMono Nerd Font..."
 FONT_ZIP="$HOME/Downloads/VictorMono.zip"
 FONT_DIR="$HOME/.local/share/fonts"
 mkdir -p "$FONT_DIR"
@@ -28,9 +34,9 @@ curl -Lo "$FONT_ZIP" https://github.com/ryanoasis/nerd-fonts/releases/latest/dow
 unzip -o "$FONT_ZIP" -d "$FONT_DIR"
 fc-cache -fv
 
-# Set GNOME terminal font
+echo "🎨 Setting GNOME terminal font..."
 PROFILE_ID=$(dconf list /org/gnome/terminal/legacy/profiles:/ | head -n 1 | tr -d '/')
 dconf write /org/gnome/terminal/legacy/profiles:/$PROFILE_ID/font "'VictorMono Nerd Font 10'"
 dconf write /org/gnome/terminal/legacy/profiles:/$PROFILE_ID/use-system-font false
 
-
+echo "✅ Done!"
